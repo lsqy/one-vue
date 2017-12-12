@@ -126,6 +126,9 @@ export default {
       })
     }
   },
+  destroyed() { // 这个操作至关重要，如果不清除mescroll实例，导致到下一个页面ios下无法滑动
+    this.mescroll.destroy();
+  }
 };
 </script>
 

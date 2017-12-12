@@ -56,7 +56,7 @@ export default {
   .music-detail-page {
     height: auto;
     color: #323232;
-    overflow: auto;
+    // overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     .music-detail-banner {
         position: relative;
@@ -124,6 +124,7 @@ export default {
         color: #808080;
         font-style: oblique;
         font-size: .32rem;
+        padding-bottom: .266667rem;
         p {
             margin: .533333rem;
         }

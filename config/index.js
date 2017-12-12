@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: '172.21.10.165', // can be overwritten by process.env.HOST
+    host: '192.168.10.100', // can be overwritten by process.env.HOST
     port: 9001, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -48,7 +48,7 @@ module.exports = {
     cssSourceMap: false,
     proxyTable: {
       '/api': {
-        target: 'http://172.21.10.165:7001',
+        target: 'http://192.168.10.100:7001',
         changeOrigin: true,
         pathRewrite: {
         }
