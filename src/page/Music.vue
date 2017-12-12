@@ -3,7 +3,7 @@
     <div id="mescroll" class="mescroll">
         <div class="mescroll-bounce">
             <div id="dataList"  class="data-list music-list v-transition">
-                <div class="music-list-item" v-for="musicItem in musicList" :key="musicItem.id">
+                <div class="music-list-item" v-for="musicItem in musicList" :key="musicItem.id" @click="goDetail(musicItem.item_id)">
                     <div class="music-list-tag">- <span>音乐</span> -</div>
                     <div class="music-list-item-title">
                         <p>{{ musicItem.title }}</p>
@@ -71,7 +71,7 @@ export default {
       },
     });
     // 禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
-    document.ondragstart = self.ondragstart;
+    // document.ondragstart = self.ondragstart;
   },
   methods: {
     upCallback(page) {
@@ -117,6 +117,14 @@ export default {
     ondragstart() {
       return false;
     },
+    goDetail(item_id) {
+      this.$router.push({
+        name: 'MusicDetail',
+        params: {
+          id: item_id
+        }
+      })
+    }
   },
 };
 </script>

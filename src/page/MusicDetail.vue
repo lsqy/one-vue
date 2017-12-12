@@ -16,7 +16,7 @@
     <div class="music-detail-author">
         <p>文/{{ musicDetail.story_author ? musicDetail.story_author.user_name : '' }}</p>
     </div>
-    <div class="music-detail-content" v-html="musicDetail.story">
+    <div class="music-detail-content" v-html="musicDetail.story ? musicDetail.story : ''">
     </div>
     <div class="music-detail-content-footer">
         <p>{{ musicDetail.charge_edt }}</p>
@@ -54,8 +54,10 @@ export default {
 
 <style lang="scss" scoped>
   .music-detail-page {
-    height: 100%;
+    height: auto;
     color: #323232;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
     .music-detail-banner {
         position: relative;
         width: 100%;
