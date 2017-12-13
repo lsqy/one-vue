@@ -2,7 +2,19 @@
 // Template version: 1.2.5
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require('path')
+const path = require('path');
+const os = require('os');
+
+// 获取本机ip地址
+let IPV4;
+// console.log(os.networkInterfaces());
+for(let i=0; i < os.networkInterfaces().enp4s0.length; i++){  
+    if(os.networkInterfaces().enp4s0[i].family == 'IPv4'){  
+        IPV4 = os.networkInterfaces().enp4s0[i].address;  
+    }  
+}  
+
+console.log(IPV4);
 
 module.exports = {
   dev: {
@@ -13,7 +25,7 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: '192.168.10.100', // can be overwritten by process.env.HOST
+    host: IPV4, // can be overwritten by process.env.HOST
     port: 9001, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -48,7 +60,7 @@ module.exports = {
     cssSourceMap: false,
     proxyTable: {
       '/api': {
-        target: 'http://192.168.10.100:7001',
+        target: `http://${IPV4}:7001`,
         changeOrigin: true,
         pathRewrite: {
         }

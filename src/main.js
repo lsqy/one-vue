@@ -6,8 +6,11 @@ import VueAxios from 'vue-axios';
 import App from './App';
 import router from './router';
 import utils from './utils/util';
+import config from './config/config';
 
-Object.defineProperty(Vue.prototype, '$utils', { value: utils });
+Object.defineProperty(Vue.prototype, '$_utils', { value: utils });
+Object.defineProperty(Vue.prototype, '$_config', { value: config });
+
 Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;

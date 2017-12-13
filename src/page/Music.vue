@@ -7,7 +7,7 @@
                     <div class="music-list-tag">- <span>音乐</span> -</div>
                     <div class="music-list-item-title">
                         <p>{{ musicItem.title }}</p>
-                        <p class="music-list-item-title__desc">{{ musicItem.share_list.wx ? $utils.getAuthor(musicItem.share_list.wx.desc) : ''}}</p>
+                        <p class="music-list-item-title__desc">{{ musicItem.share_list.wx ? $_utils.getAuthor(musicItem.share_list.wx.desc) : ''}}</p>
                     </div>
                     <div class="music-list-item-cover">
                         <div class="music-list-item-cover-background"></div>
@@ -20,7 +20,7 @@
                     <div class="music-list-item-content">
                         <p class="music-list-item-music__desc">{{ musicItem.author.user_name }} | {{ musicItem.subtitle }}</p>
                         <p class="music-list-item-content-title">{{ musicItem.forward }}</p>
-                        <p class="music-list-item-content-date">{{ $utils.formatDate(musicItem.post_date) }}</p>
+                        <p class="music-list-item-content-date">{{ $_utils.formatDate(musicItem.post_date) }}</p>
                     </div>
                 </div>
             </div>
@@ -117,18 +117,26 @@ export default {
     ondragstart() {
       return false;
     },
-    goDetail(item_id) {
+    goDetail(itemId) {
       this.$router.push({
         name: 'MusicDetail',
         params: {
-          id: item_id
-        }
-      })
+          id: itemId,
+        },
+      });
+    },
+  },
+  destroyed() {
+    // 这个操作至关重要，如果不清除mescroll实例，导致到下一个页面ios下无法滑动，因为是单页应用，如果不清除的话，会一直在内存中
+    this.mescroll.destroy();
+    const { $ } = this.$_utils;
+    const $mescrollTotop = $('.mescroll-totop')[0];
+    const $body = $('body')[0];
+    if($mescrollTotop) {
+      // 移除滑到顶部，否则切换到其他页面之后还存在
+      $body.removeChild($mescrollTotop);
     }
   },
-  destroyed() { // 这个操作至关重要，如果不清除mescroll实例，导致到下一个页面ios下无法滑动
-    this.mescroll.destroy();
-  }
 };
 </script>
 

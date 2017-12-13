@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
+import Index from '@/page/index';
 import Music from '@/page/Music';
 import MusicDetail from '@/page/MusicDetail';
 
@@ -11,8 +11,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld,
+      name: 'Index',
+      component: Index,
     },
     {
       path: '/music',
