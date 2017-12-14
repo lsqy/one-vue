@@ -55,6 +55,8 @@ export default {
         height: .533333rem;
         border-radius: 50%;
         margin-right: .133333rem;
+        position: relative;
+        top: -2px;
       }
       .c-comment-list-item-info {
         flex: 1;
@@ -68,7 +70,7 @@ export default {
         .c-comment-list-item-info-content {
            line-height: .666667rem;
            margin-top: .4rem;
-           font-size: .426667rem;
+           font-size: .32rem;
         }
       }
     }

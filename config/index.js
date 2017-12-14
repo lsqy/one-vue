@@ -7,12 +7,25 @@ const os = require('os');
 
 // 获取本机ip地址
 let IPV4;
-// console.log(os.networkInterfaces());
-for(let i=0; i < os.networkInterfaces().enp4s0.length; i++){  
-    if(os.networkInterfaces().enp4s0[i].family == 'IPv4'){  
-        IPV4 = os.networkInterfaces().enp4s0[i].address;  
+console.log(os.networkInterfaces());
+switch (os.platform()) {
+  case 'win32': 
+    for(let i=0; i < os.networkInterfaces().WLAN.length; i++){  
+        if(os.networkInterfaces().WLAN[i].family == 'IPv4'){  
+            IPV4 = os.networkInterfaces().WLAN[i].address;  
+        }  
+    } 
+    break;
+  case 'linux':
+    for(let i=0; i < os.networkInterfaces().enp4s0.length; i++){  
+        if(os.networkInterfaces().enp4s0[i].family == 'IPv4'){  
+            IPV4 = os.networkInterfaces().enp4s0[i].address;  
+        }  
     }  
-}  
+    break;  
+}
+
+
 
 console.log(IPV4);
 

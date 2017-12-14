@@ -57,78 +57,16 @@ export default {
       musicDetail: {
           author_list: {}
       },
-      commentList: [
-        {
-            "id": "62265",
-            "quote": "",
-            "content": "想变的更好，成为你余生之中咬牙切齿的遗憾。",
-            "praisenum": 186,
-            "device_token": "",
-            "del_flag": "0",
-            "reviewed": "1",
-            "user_info_id": "10089",
-            "input_date": "2017-12-13 06:42:52",
-            "created_at": "2017-12-13 06:42:52",
-            "updated_at": "2017-12-13 14:23:47",
-            "user": {
-            "user_id": "6087871",
-            "user_name": "睿睿睿睿睿宝",
-            "web_url": "http://image.wufazhuce.com/FkCnVuJc0itF8YNME-cx3d6c2JgI?imageView2/1/w/80/h/80/q/75"
-            },
-            "touser": null,
-            "type": 0
-        },
-        {
-            "id": "62262",
-            "quote": "",
-            "content": "别在电话里哽咽了，如果可以，明天我们见面吧",
-            "praisenum": 116,
-            "device_token": "",
-            "del_flag": "0",
-            "reviewed": "1",
-            "user_info_id": "10089",
-            "input_date": "2017-12-13 06:30:32",
-            "created_at": "2017-12-13 06:30:32",
-            "updated_at": "2017-12-13 14:12:25",
-            "user": {
-            "user_id": "8444499",
-            "user_name": "潘多拉",
-            "web_url": "http://image.wufazhuce.com/Fg_6PL3ZnqpkCXtTtnTuiOJKQsI3?imageView2/1/w/80/h/80/q/75"
-            },
-            "touser": null,
-            "type": 0
-        },
-        {
-            "id": "62283",
-            "quote": "",
-            "content": "终于鼓起勇气问你为什么不理我，回答我的还是等待，原来我们之间只有我认真了，你只是一时冲动说喜欢我，过去了那个时间，你已经忘记了，而我却还沉浸在感动里。是的，我错了，你没有时间配合我那么久，毕竟你很忙。",
-            "praisenum": 71,
-            "device_token": "",
-            "del_flag": "0",
-            "reviewed": "1",
-            "user_info_id": "10089",
-            "input_date": "2017-12-13 07:43:24",
-            "created_at": "2017-12-13 07:43:24",
-            "updated_at": "2017-12-13 14:23:47",
-            "user": {
-            "user_id": "8661893",
-            "user_name": "安",
-            "web_url": "http://image.wufazhuce.com/Fh10GxbMN1PnmQmWrNxl83ioYtDb?imageView2/1/w/80/h/80/q/75"
-            },
-            "touser": null,
-            "type": 0
-        }
-      ],
+      commentList: [],
     };
   },
   components: {
     'comment-list-item': CommentListItem,
   },
   mounted() {
-    console.log(this.$route.params);
-    const { id } = this.$route.params;
-    this.getDetail(id);
     const self = this;
+    const { id } = self.$route.params;
+    self.getDetail(id);
     self.mescroll = new MeScroll('mescroll', {
         // 配置下拉刷新
         down: {
@@ -137,12 +75,15 @@ export default {
         up: {    // 配置上拉加载
             callback: self.upCallback,
             toTop: {
-            src: '/static/img/mescroll-totop.png',
-            offset: 1000,
+                src: '/static/img/mescroll-totop.png',
+                offset: 1000,
+            },
+            page: {
+                size: 10, //每页数据条数
             },
             empty: {
-            wrapId: 'dataList',
-            tip: '暂无数据',
+                wrapId: 'dataList',
+                tip: '暂无数据',
             },
             clearEmptyId: 'dataList', // 相当于同时设置了clearId和empty.warpId; 简化写法;
         },
@@ -153,17 +94,14 @@ export default {
   methods: {
     upCallback(page) {
       const self = this;
-      console.log(2112);
       self.getListDataFromNet(page.num, page.size, (curPageData) => {
         // curPageData=[]; //打开本行注释,可演示列表无任何数据empty的配置
-        // console.log('curPageData', curPageData);
-        // 如果是第一页需手动置空列表
-        // if(page.num == 1) self.musicList = [];
+        console.log('curPageData', curPageData);
         // 更新列表数据
         self.commentList = self.commentList.concat(curPageData);
         // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
         // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
-        console.log(`page.num=${page.num}, page.size=${page.size}, curPageData.length=${curPageData.length}, self.musicList.length:${self.musicList.length}`);
+        console.log('curPageData.length',curPageData.length);
         self.mescroll.endSuccess(curPageData.length);
       }, () => {
         // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
@@ -171,32 +109,32 @@ export default {
       });
     },
     getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
-      /*const { musicList, isRefresh } = this;
       const self = this;
+      const { id } = self.$route.params;
+      const { commentList } = self;
+
       // 请求首页的时候不加id，以后分页请求加上最后一条的id
-      let url = '/api/v1/music';
-      if (musicList.length > 0 && !isRefresh) {
-        url = `${url}/${musicList[musicList.length - 1].id}`;
+      let url = `/api/v1/comment/music/${id}/0`;
+      if (commentList.length > 0) {
+        url = `/api/v1/comment/music/${id}/${commentList[commentList.length - 1].id}`;
       }
-      this.axios.get(url).then((res) => {
+      self.axios.get(url).then((res) => {
         if (res.data && res.data.data) {
           if (successCallback) {
-            successCallback(res.data.data); // 成功回调
-            self.isRefresh = false;
+            successCallback(res.data.data.data); // 成功回调
           }
         }
       }, (err) => {
         if (errorCallback) {
           errorCallback(err); // 失败回调
-          self.isRefresh = false;
         }
-      });*/
+      });
     },
     ondragstart() {
       return false;
     },
     getDetail(id) {
-      const url = `/api/v1/musicDetail/${id}`;
+      const url = `/api/v1/music/detail/${id}`;
       const self = this;
       self.axios.get(url).then((res) => {
         console.log('res', res);
@@ -205,6 +143,17 @@ export default {
       });
     },
   },
+  destroyed() {
+    // 这个操作至关重要，如果不清除mescroll实例，导致到下一个页面ios下无法滑动，因为是单页应用，如果不清除的话，会一直在内存中
+    this.mescroll.destroy();
+    const { $ } = this.$_utils;
+    const $mescrollTotop = $('.mescroll-totop')[0];
+    const $body = $('body')[0];
+    if($mescrollTotop) {
+        // 移除滑到顶部，否则切换到其他页面之后还存在
+        $body.removeChild($mescrollTotop);
+    }
+   },
 };
 </script>
 

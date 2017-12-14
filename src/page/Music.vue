@@ -63,6 +63,9 @@ export default {
           src: '/static/img/mescroll-totop.png',
           offset: 1000,
         },
+        page: {
+						size: 10, //每页数据条数
+				},
         empty: {
           wrapId: 'dataList',
           tip: '暂无数据',
