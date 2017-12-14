@@ -22,9 +22,16 @@
               <p class="one-index-item-title-author">{{ contentItem.share_list.wx.desc ? contentItem.share_list.wx.desc.split(' ')[0] : '' }}</p>
             </div> 
             <div class="one-index-item-img spec">
-              <img :src="contentItem.img_url" alt="">
+              <template v-if="contentItem.category == '4'">
+                <img :src="contentItem.img_url" alt="" class="one-index-item-music-img">
+                <img src="http://image.wufazhuce.com/music-detail-play.png" width="100%" class="play-btn">
+                <img src="http://image.wufazhuce.com/music_copyright_1.png" width="100%" class="platform-icon">
+              </template>
+              <template v-else>
+                <img :src="contentItem.img_url" alt="">
+              </template>
             </div>
-            <p class="one-index-item-content">{{ contentItem.forward }}</p>
+            <p class="one-index-item-content spec">{{ contentItem.forward }}</p>
             <p class="one-index-item-subtitle">{{ contentItem.subtitle ? '—' + contentItem.subtitle : '' }}</p>
           </template>
      </div>
@@ -130,14 +137,35 @@ export default {
         }
       }
       .one-index-item-img {
+        position: relative;
+        text-align: center;
         &.spec {
           margin: 0 .533333rem;
         }
         img {
-          display: block;
           width: 100%;
           height: auto;
           margin: .4rem 0;
+        }
+        .one-index-item-music-img {
+          width: 80%;
+          border-radius: 50%;
+        }
+        .platform-icon {
+          position: absolute;
+          left: 0;
+          bottom: .266667rem;
+          width: .64rem;
+          height: .64rem;
+        }
+        .play-btn {
+          position: absolute;
+          width: 1.333333rem;
+          height: 1.333333rem;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+          margin: 0;
         }
       }
       .one-index-item-author {
@@ -153,6 +181,9 @@ export default {
         line-height: .693333rem;
         margin: .533333rem;
         margin-bottom: .48rem;
+        &.spec {
+          margin-top: 0;
+        }
       }
       .one-index-item-subtitle {
         color: #000000;

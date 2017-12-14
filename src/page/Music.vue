@@ -96,9 +96,9 @@ export default {
       const { musicList, isRefresh } = this;
       const self = this;
       // 请求首页的时候不加id，以后分页请求加上最后一条的id
-      let url = '/api/v1/music';
+      let url = '/api/v1/music/0';
       if (musicList.length > 0 && !isRefresh) {
-        url = `${url}/${musicList[musicList.length - 1].id}`;
+        url = `/api/v1/music/${musicList[musicList.length - 1].id}`;
       }
       this.axios.get(url).then((res) => {
         if (res.data && res.data.data) {

@@ -117,7 +117,8 @@ export default {
             },
             "touser": null,
             "type": 0
-        }]
+        }
+      ],
     };
   },
   components: {
