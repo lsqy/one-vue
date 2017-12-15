@@ -49,20 +49,20 @@ export default {
   mounted() {
     const self = this;
     const idListUrl = `${this.$_config.apiBaseURL}/onelist/idlist`;
-    // 首先获取首页前十条图文索引
-    self.axios.get(idListUrl).then((res) => {
-      if (res.data && res.data.data.length > 0) {
-        const listSingleUrl = `${this.$_config.apiBaseURL}/onelist/${res.data.data[0]}/0`;
+    // // 首先获取首页前十条图文索引
+    // self.axios.get(idListUrl).then((res) => {
+    //   if (res.data && res.data.data.length > 0) {
+        const listSingleUrl = `${this.$_config.apiBaseURL}/onelist`;
         // 通过上面获取的索引取第一个访问最新的一日
         self.axios.get(listSingleUrl).then((res2) => {
           self.contentList = res2.data.data.content_list;
         }, () => {
 
         });
-      }
-    }, () => {
+    //   }
+    // }, () => {
 
-    });
+    // });
   },
   methods: {
     goDetail(category, itemId) {
