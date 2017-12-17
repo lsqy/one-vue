@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Index from '@/page/index';
 import Music from '@/page/Music';
 import MusicDetail from '@/page/MusicDetail';
+import Reading from '@/page/reading';
 
 Vue.use(Router);
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/music/:id',
       name: 'MusicDetail',
       component: MusicDetail,
+    },
+    {
+      path: '/reading',
+      name: 'Reading',
+      component: Reading,
     },
   ],
 });
