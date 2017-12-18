@@ -1,4 +1,4 @@
 # one-vue
 
 - [ ] test
-- [ x ] test2
+- [x] test2
