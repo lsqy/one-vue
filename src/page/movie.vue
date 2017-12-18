@@ -1,9 +1,9 @@
 <template>
-  <div class="reading-list-page">
+  <div class="movie-list-page">
     <div id="mescroll" class="mescroll">
         <div class="mescroll-bounce">
-            <div id="dataList"  class="data-list reading-list v-transition">
-                <reading-item v-for="readingItem in readingList" :key="readingItem.id" @click.native="goDetail(readingItem.item_id)" :contentItem="readingItem"/>
+            <div id="dataList"  class="data-list movie-list v-transition">
+                <movie-item v-for="movieItem in movieList" :key="movieItem.id" @click.native="goDetail(movieItem.item_id)" :contentItem="movieItem"/>
             </div>
         </div>
     </div>    
@@ -18,13 +18,13 @@ export default {
   data() {
     return {
       mescroll: null,
-      readingList: [
+      movieList: [
       ],
       isRefresh: false, // 是否是下拉刷新
     };
   },
   components: {
-    'reading-item': IndexItem,
+    'movie-item': IndexItem,
   },
   mounted() {
     const self = this;
@@ -68,12 +68,12 @@ export default {
         // curPageData=[]; //打开本行注释,可演示列表无任何数据empty的配置
         // console.log('curPageData', curPageData);
         // 如果是第一页需手动置空列表
-        // if(page.num == 1) self.readingList = [];
+        // if(page.num == 1) self.movieList = [];
         // 更新列表数据
-        self.readingList = self.readingList.concat(curPageData);
+        self.movieList = self.movieList.concat(curPageData);
         // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
         // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
-        console.log(`page.num=${page.num}, page.size=${page.size}, curPageData.length=${curPageData.length}, self.readingList.length:${self.readingList.length}`);
+        console.log(`page.num=${page.num}, page.size=${page.size}, curPageData.length=${curPageData.length}, self.movieList.length:${self.movieList.length}`);
         self.mescroll.endSuccess(curPageData.length);
       }, () => {
         // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
@@ -81,12 +81,12 @@ export default {
       });
     },
     getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
-      const { readingList, isRefresh } = this;
+      const { movieList, isRefresh } = this;
       const self = this;
       // 请求首页的时候不加id，以后分页请求加上最后一条的id
-      let url = '/api/v1/reading/0';
-      if (readingList.length > 0 && !isRefresh) {
-        url = `/api/v1/reading/${readingList[readingList.length - 1].id}`;
+      let url = '/api/v1/movie/0';
+      if (movieList.length > 0 && !isRefresh) {
+        url = `/api/v1/movie/${movieList[movieList.length - 1].id}`;
       }
       this.axios.get(url).then((res) => {
         if (res.data && res.data.data) {
@@ -129,7 +129,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .reading-list-page {
+    .movie-list-page {
         height: 100%;
         color: #323232;
         background: #f6f6f6;

@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Index from '@/page/index';
-import Music from '@/page/Music';
-import MusicDetail from '@/page/MusicDetail';
+import Music from '@/page/music';
+import MusicDetail from '@/page/musicDetail';
 import Reading from '@/page/reading';
+import Movie from '@/page/movie';
 
 Vue.use(Router);
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/reading',
       name: 'Reading',
       component: Reading,
+    },
+    {
+      path: '/movie',
+      name: 'Movie',
+      component: Movie,
     },
   ],
 });

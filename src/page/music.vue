@@ -3,26 +3,7 @@
     <div id="mescroll" class="mescroll">
         <div class="mescroll-bounce">
             <div id="dataList"  class="data-list music-list v-transition">
-                <div class="music-list-item" v-for="musicItem in musicList" :key="musicItem.id" @click="goDetail(musicItem.item_id)">
-                    <div class="music-list-tag">- <span>音乐</span> -</div>
-                    <div class="music-list-item-title">
-                        <p>{{ musicItem.title }}</p>
-                        <p class="music-list-item-title__desc">{{ musicItem.share_list.wx ? $_utils.getAuthor(musicItem.share_list.wx.desc) : ''}}</p>
-                    </div>
-                    <div class="music-list-item-cover">
-                        <div class="music-list-item-cover-background"></div>
-                        <div class="music-list-item-cover-img">
-                            <img :src="musicItem.img_url" alt="" class="music-list-item-img">
-                        </div>
-                        <img src="http://image.wufazhuce.com/play_btn_empty.png" alt="" class="music-list-item-play-btn">
-                        <img src="http://image.wufazhuce.com/music_copyright_1.png" width="100%" class="music-list-item-platform-icon">
-                    </div>
-                    <div class="music-list-item-content">
-                        <p class="music-list-item-music__desc">{{ musicItem.author.user_name }} | {{ musicItem.subtitle }}</p>
-                        <p class="music-list-item-content-title">{{ musicItem.forward }}</p>
-                        <p class="music-list-item-content-date">{{ $_utils.formatDate(musicItem.post_date) }}</p>
-                    </div>
-                </div>
+                <music-item v-for="musicItem in musicList" :key="musicItem.id" @click.native="goDetail(musicItem.item_id)" :contentItem="musicItem"/>
             </div>
         </div>
     </div>    
@@ -31,6 +12,7 @@
 
 <script>
 /* global MeScroll :true */
+import MusicItem from '@/components/MusicItem';
 export default {
   name: 'Music',
   data() {
@@ -40,6 +22,9 @@ export default {
       ],
       isRefresh: false, // 是否是下拉刷新
     };
+  },
+  components: {
+    'music-item': MusicItem,
   },
   mounted() {
     const self = this;
@@ -151,96 +136,5 @@ export default {
     }
     .mescroll-bounce {
         height: 100%;
-    }
-    .music-list-tag {
-        text-align: center;
-        font-size: .32rem;
-        color: #676f6f;
-        line-height: .666667rem;
-        padding: .266667rem 0 .4rem;
-    }
-    .music-list-item {
-        background: #fff;
-        margin-bottom: .213333rem;
-    }
-    .music-list-item-title {
-        font-size: .533333rem;
-        font-weight: 500;
-        line-height: 1.5;
-        padding: 0 .533333rem;
-    }
-    .music-list-item-title__desc {
-        font-size: .426667rem;
-        color: #676f6f;
-        line-height: 2;
-        padding: .133333rem 0;
-        font-weight: normal;
-    }
-    .music-list-item-cover {
-        position: relative;
-        margin: .266667rem 0;
-        width: 100%;
-        height: 6.453333rem;
-        background: url(http://image.wufazhuce.com/music-list-right.png) no-repeat center right;
-        background-size: auto 100%; 
-    }
-    .music-list-item-cover-background {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 7.973333rem;
-        height: 6.506667rem;
-        box-shadow: 0 0 .266667rem .053333rem rgba(230, 230, 230, 0.5);
-        border-radius: 0 4.224rem 4.266667rem 0;
-    }
-    .music-list-item-cover-img {
-        position: absolute;
-        width: 6.026667rem;
-        height: 6.026667rem;
-        overflow: hidden;
-        background-size: cover;
-        background-image: url(http://image.wufazhuce.com/music-list-paceholder.png);
-        border-radius: 50%;
-        top: .213333rem;
-        left: 1.733333rem;
-    }
-    .music-list-item-img {
-        display: block;
-        width: 100%;
-        height: auto;
-        border-radius: 50%;
-    }
-    .music-list-item-play-btn {
-        display: block;
-        width: 1.173333rem;
-        height: 1.173333rem;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-    }
-    .music-list-item-platform-icon {
-        position: absolute;
-        width: .64rem;
-        height: .64rem;
-        left: .533333rem;
-        bottom: .213333rem;
-    }
-    .music-list-item-content {
-        padding: 0 .533333rem;
-        color: #676f6f;
-    }
-    .music-list-item-music__desc {
-        font-size: .32rem;
-        padding: .32rem 0 0 0;
-    }
-    .music-list-item-content-title {
-        font-size: .373333rem;
-        line-height: .666667rem;
-        padding: .266667rem 0;
-    }
-    .music-list-item-content-date {
-        font-size: .32rem;
-        padding: .266667rem 0 .8rem 0;
     }
 </style>
