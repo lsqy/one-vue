@@ -5,6 +5,7 @@ import Music from '@/page/music';
 import MusicDetail from '@/page/musicDetail';
 import Reading from '@/page/reading';
 import Movie from '@/page/movie';
+import MovieDetail from '@/page/movieDetail';
 
 Vue.use(Router);
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/movie',
       name: 'Movie',
       component: Movie,
+    },
+    {
+      path: '/movie/:id',
+      name: 'MovieDetail',
+      component: MovieDetail,
     },
   ],
 });

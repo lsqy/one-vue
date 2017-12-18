@@ -11,7 +11,7 @@
     <p class="c-index-item-content">{{ contentItem.forward }}</p>
     <template v-if="contentItem.subtitle != ''">
       <div class="c-index-item-footer">
-        <span class="c-index-item-subtitle">{{ contentItem.subtitle ? '—' + contentItem.subtitle : '' }}</span>
+        <span class="c-index-item-subtitle">{{ contentItem.subtitle ? '—关于《' + contentItem.subtitle.split('电影:')[1] + '》': '' }}</span>
         <span class="c-index-item-content-date-spec">{{ $_utils.formatDate(contentItem.post_date) }}</span>
       </div>
     </template>
