@@ -3,7 +3,7 @@
       <div class="c-music-item-tag">- <span>音乐</span> -</div>
       <div class="c-music-item-title">
           <p>{{ contentItem.title }}</p>
-          <p class="c-music-item-title__desc">{{ contentItem.share_list.wx ? $_utils.getAuthor(contentItem.share_list.wx.desc) : ''}}</p>
+          <p class="c-music-item-title__desc">{{ (contentItem.share_list.wx && contentItem.share_list.wx.desc) ? $_utils.getAuthor(contentItem.share_list.wx.desc) : ''}}</p>
       </div>
       <div class="c-music-item-cover">
           <div class="c-music-item-cover-background"></div>
@@ -16,7 +16,7 @@
       <div class="c-music-item-content">
           <p class="c-music-item-music__desc">{{ contentItem.author.user_name }} | {{ contentItem.subtitle }}</p>
           <p class="c-music-item-content-title">{{ contentItem.forward }}</p>
-          <p class="c-music-item-content-date">{{ $_utils.formatDate(contentItem.post_date) }}</p>
+          <p class="c-music-item-content-date">{{ contentItem.post_date ? $_utils.formatDate(contentItem.post_date) : '' }}</p>
       </div>
   </div>
 </template>
@@ -27,13 +27,15 @@ export default {
   props: {
     contentItem: {
       type: Object,
-      default: {
-        author: {},
-        share_list: {
-          wx: {
+      default: function() {
+        return {
+            author: {},
+            share_list: {
+                wx: {
 
-          },
-        },
+                },
+            },
+        }
       },
     },
   },

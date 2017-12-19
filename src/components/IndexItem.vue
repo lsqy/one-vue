@@ -3,7 +3,7 @@
     <p class="c-index-item-tag">— {{ (contentItem.share_list.wx && contentItem.share_list.wx.title.split(' ')[0] != 'ONE') ? contentItem.share_list.wx.title.split(' ')[0] : 'ONE STORY' }} —</p>
     <div class="c-index-item-title">
       <p class="c-index-item-title-name">{{ contentItem.title }}</p>
-      <p class="c-index-item-title-author">{{ contentItem.share_list.wx ? contentItem.share_list.wx.desc.split(' ')[0] : '' }}</p>
+      <p class="c-index-item-title-author">{{ (contentItem.share_list.wx && contentItem.share_list.wx.desc) ? contentItem.share_list.wx.desc.split(' ')[0] : '' }}</p>
     </div> 
     <div class="c-index-item-img">
       <img :src="contentItem.img_url" alt="">
