@@ -107,7 +107,7 @@ export default {
     },
     goDetail(itemId) {
       this.$router.push({
-        name: 'MusicDetail',
+        name: 'ReadingDetail',
         params: {
           id: itemId,
         },

@@ -24,17 +24,7 @@
                 <p>{{ musicDetail.charge_edt }}</p>
                 <p>{{ musicDetail.copyright }}</p>
             </div>
-            <div class="music-detail-author-wrap">
-                <p>作者</p>
-                <hr class="music-detail-author-separate-line">
-                <div class="music-detail-author-detail">
-                    <img :src="musicDetail.author_list[0] ? musicDetail.author_list[0].web_url : ''" alt="">
-                    <div class="music-detail-author-detail-info">
-                        <p>{{ musicDetail.author_list[0] ? musicDetail.author_list[0].user_name : '' }}</p>
-                        <p class="music-detail-author-detail-desc">{{ musicDetail.author_list[0] ? musicDetail.author_list[0].desc : '' }}</p>
-                    </div>
-                </div>
-            </div>
+            <author-item :authorInfo="(musicDetail.author_list && musicDetail.author_list[0])  ? musicDetail.author_list[0] : {}" />
             <div class="music-detail-comment">
                 <p class="music-detail-comment-title">评论内容</p>
                 <hr class="music-detail-comment-separate-line"> 
@@ -49,19 +39,22 @@
 
 <script>
 import CommentListItem from '@/components/CommentListItem';
+import AuthorItem from '@/components/AuthorItem';
+
 export default {
   name: 'Music',
   data() {
     return {
       mescroll: null,
       musicDetail: {
-          author_list: {}
+          author_list: []
       },
       commentList: [],
     };
   },
   components: {
     'comment-list-item': CommentListItem,
+    'author-item': AuthorItem,
   },
   mounted() {
     const self = this;
@@ -83,7 +76,7 @@ export default {
             },
             empty: {
                 wrapId: 'dataList',
-                tip: '暂无数据',
+                tip: '暂无评论',
             },
             clearEmptyId: 'dataList', // 相当于同时设置了clearId和empty.warpId; 简化写法;
         },
@@ -232,36 +225,6 @@ export default {
         padding-bottom: .266667rem;
         p {
             margin: .533333rem;
-        }
-    }
-    .music-detail-author-wrap {
-        font-size: .4rem;
-        margin: .533333rem;
-        .music-detail-author-separate-line {
-            border: .053333rem solid #000;
-            margin: .186667rem 0;
-            width: 1.866667rem;
-        }
-        .music-detail-author-detail {
-            display: flex;
-            align-items: center;
-            line-height: .533333rem;
-            font-size: .373333rem;
-            img {
-                width: 1.2rem;
-                height: 1.2rem;
-                border-radius: 50%;
-                display: inline-block;
-                overflow: hidden;
-                margin-right: .133333rem;
-            }
-            .music-detail-author-detail-info {
-                flex: 1;
-            }
-            .music-detail-author-detail-desc {
-                color: #808080;
-                font-size: .266667rem;
-            }
         }
     }
     .music-detail-comment-list {

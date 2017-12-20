@@ -73,9 +73,48 @@ export default {
   methods: {
     goDetail(category, itemId) {
       switch (category) {
+        // - 0 代表摄影/插画
+        // - 1 代表文章/ONE STORY
+        // - 2 代表连载
+        // - 3 代表问答
+        // - 4 代表音乐
+        // - 5 代表电影/影视
+        // - 6 广告
+        case '1':
+          this.$router.push({
+            name: 'ReadingDetail',
+            params: {
+              id: itemId,
+            },
+          });
+          break;
+        case '2':
+          this.$router.push({
+            name: 'SerialDetail',
+            params: {
+              id: itemId,
+            },
+          });
+          break;
+        case '3':
+          this.$router.push({
+            name: 'QuestionDetail',
+            params: {
+              id: itemId,
+            },
+          });
+          break;
         case '4':
           this.$router.push({
             name: 'MusicDetail',
+            params: {
+              id: itemId,
+            },
+          });
+          break;
+        case '5':
+          this.$router.push({
+            name: 'MovieDetail',
             params: {
               id: itemId,
             },

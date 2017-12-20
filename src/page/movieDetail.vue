@@ -1,45 +1,30 @@
 <template>
-  <div class="music-detail-page">
+  <div class="movie-detail-page">
     <div id="mescroll" class="mescroll">
         <div class="mescroll-bounce">
-            <div class="music-detail-banner">
-                <div class="music-detail-banner-shade"></div>
-                <img class="music-detail-banner-img" :src="movieDetail.cover" alt="">               
-                <img src="http://image.wufazhuce.com/music-detail-play.png" alt="" class="music-detail-banner-play-btn">
-            </div>
-            <div class="music-detail-info">
+            <carousel class="movie-detail-banner" :perPage="1" paginationActiveColor="#42b983" paginationColor="#b2ebd1" :paginationSize="5" :autoplay="true" :autoplayHoverPause="true" :autoplayTimeout="5000">
+                <slide class="movie-detail-banner-item" v-for="photoItem in movieDetail.photoList" :key="photoItem">
+                    <img :src="photoItem" alt="">
+                </slide>
+            </carousel>
+            <div class="movie-detail-title">
                 <p>{{ movieDetail.title }}</p>
-                <p>{{ movieDetail.album }}</p>
-                <p>{{ movieDetail.story_author ? movieDetail.story_author.user_name : '' }}</p>
             </div>
-            <div class="music-detail-title">
-                <p>{{ movieDetail.story_title }}</p>
+            <div class="movie-detail-author">
+                <p>文/{{ (movieDetail.author_list && movieDetail.author_list[0]) ? movieDetail.author_list[0].user_name : '' }}</p>
             </div>
-            <div class="music-detail-author">
-                <p>文/{{ movieDetail.story_author ? movieDetail.story_author.user_name : '' }}</p>
+            <div class="movie-detail-content" v-html="movieDetail.content ? movieDetail.content : ''">
             </div>
-            <div class="music-detail-content" v-html="movieDetail.content ? movieDetail.content : ''">
-            </div>
-            <div class="music-detail-content-footer">
+            <div class="movie-detail-content-footer">
                 <p>{{ movieDetail.charge_edt }}</p>
                 <p>{{ movieDetail.copyright }}</p>
             </div>
-            <div class="music-detail-author-wrap">
-                <p>作者</p>
-                <hr class="music-detail-author-separate-line">
-                <div class="music-detail-author-detail">
-                    <img :src="movieDetail.author_list[0] ? movieDetail.author_list[0].web_url : ''" alt="">
-                    <div class="music-detail-author-detail-info">
-                        <p>{{ movieDetail.author_list[0] ? movieDetail.author_list[0].user_name : '' }}</p>
-                        <p class="music-detail-author-detail-desc">{{ movieDetail.author_list[0] ? movieDetail.author_list[0].desc : '' }}</p>
-                    </div>
-                </div>
+            <author-item :authorInfo="(movieDetail.author_list && movieDetail.author_list[0])  ? movieDetail.author_list[0] : {}" />
+            <div class="movie-detail-comment">
+                <p class="movie-detail-comment-title">评论内容</p>
+                <hr class="movie-detail-comment-separate-line"> 
             </div>
-            <div class="music-detail-comment">
-                <p class="music-detail-comment-title">评论内容</p>
-                <hr class="music-detail-comment-separate-line"> 
-            </div>
-            <div id="dataList"  class="data-list music-detail-comment-list v-transition">
+            <div id="dataList"  class="data-list movie-detail-comment-list v-transition">
                 <comment-list-item v-for="commentListItem in commentList" :key="commentListItem.id" :info="commentListItem"/>
             </div>   
         </div>
@@ -49,19 +34,26 @@
 
 <script>
 import CommentListItem from '@/components/CommentListItem';
+import AuthorItem from '@/components/AuthorItem';
+import { Carousel, Slide } from 'vue-carousel';
+
 export default {
   name: 'Music',
   data() {
     return {
       mescroll: null,
       movieDetail: {
-          author_list: {}
+          author_list: {},
+          photoList: [],
       },
       commentList: [],
     };
   },
   components: {
     'comment-list-item': CommentListItem,
+    'author-item': AuthorItem,
+    Carousel,
+    Slide,
   },
   mounted() {
     const self = this;
@@ -83,7 +75,7 @@ export default {
             },
             empty: {
                 wrapId: 'dataList',
-                tip: '暂无数据',
+                tip: '暂无评论',
             },
             clearEmptyId: 'dataList', // 相当于同时设置了clearId和empty.warpId; 简化写法;
         },
@@ -158,59 +150,34 @@ export default {
 </script>
 
 <style lang="scss">
-  .music-detail-page {
+  .movie-detail-page {
     height: 100%;
     color: #323232;
     -webkit-overflow-scrolling: touch;
-    .music-detail-banner {
-        position: relative;
-        width: 100%;
-        height: 9.493333rem;
-        .music-detail-banner-shade {
-            position: absolute;
-            left: -4.96rem;
-            top: -3.573333rem;
-            width: 13.066667rem;
-            height: 13.066667rem;
-            border-radius: 6.533333rem 6.533333rem 6.533333rem 0;
-            box-shadow: 0 0 .533333rem .133333rem rgba(230,230,230,0.6);
-        }
-        .music-detail-banner-img {
-            position: absolute;
-            left: -4.48rem;
-            top: -3.093333rem;
-            width: 12.106667rem;
-            height: 12.106667rem;
-            border-radius: 6.053333rem 6.053333rem 6.053333rem 6.026667rem;
-            overflow: hidden;
-        }
-        .music-detail-banner-play-btn {
-            position: absolute;
-            left: .613333rem;
-            top: 2rem;
-            width: 1.92rem;
-            height: 1.92rem;
-        }
-    }
-    .music-detail-info {
-        text-align: center;
-        font-size: .373333rem;
-        line-height: .533333rem;
-        margin-top: .853333rem;
-    }
-    .music-detail-title {
-        margin: .8rem .533333rem 0 .533333rem;
+    .movie-detail-title {
+        margin: 1.8rem .533333rem 0 .533333rem;
         text-align: center;
         font-weight: bold;
         font-size: .746667rem;
     }
-    .music-detail-author {
+    .movie-detail-banner {
+        .movie-detail-banner-item {
+            width: 100%;
+            text-align: center;
+            img {
+                width: 100%;
+                height: 5.333333rem;
+                display: block;
+            }
+        }
+    }
+    .movie-detail-author {
         font-size: .373333rem;
-        margin-top: 1.066667rem;
-        margin-bottom: .8rem;
+        margin-top: .66667rem;
+        margin-bottom: .6rem;
         text-align: center;
     }
-    .music-detail-content {
+    .movie-detail-content {
         padding: 0 .533333rem;
         line-height: .693333rem;
         margin-top: .373333rem;
@@ -225,7 +192,7 @@ export default {
             color: #808080;
         }
     }
-    .music-detail-content-footer {
+    .movie-detail-content-footer {
         color: #808080;
         font-style: oblique;
         font-size: .32rem;
@@ -234,46 +201,16 @@ export default {
             margin: .533333rem;
         }
     }
-    .music-detail-author-wrap {
-        font-size: .4rem;
-        margin: .533333rem;
-        .music-detail-author-separate-line {
-            border: .053333rem solid #000;
-            margin: .186667rem 0;
-            width: 1.866667rem;
-        }
-        .music-detail-author-detail {
-            display: flex;
-            align-items: center;
-            line-height: .533333rem;
-            font-size: .373333rem;
-            img {
-                width: 1.2rem;
-                height: 1.2rem;
-                border-radius: 50%;
-                display: inline-block;
-                overflow: hidden;
-                margin-right: .133333rem;
-            }
-            .music-detail-author-detail-info {
-                flex: 1;
-            }
-            .music-detail-author-detail-desc {
-                color: #808080;
-                font-size: .266667rem;
-            }
-        }
-    }
-    .music-detail-comment-list {
+    .movie-detail-comment-list {
         margin: 0 .533333rem 0 .533333rem;
     }
-    .music-detail-comment {
+    .movie-detail-comment {
         color: #323232;
         margin: 1.6rem .533333rem 0 .533333rem;
-        .music-detail-comment-title {
+        .movie-detail-comment-title {
             font-size: .4rem;
         }
-        .music-detail-comment-separate-line {
+        .movie-detail-comment-separate-line {
             border: .053333rem solid #000;
             margin: .186667rem 0;
             width: 1.866667rem;

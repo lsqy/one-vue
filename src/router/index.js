@@ -4,6 +4,9 @@ import Index from '@/page/index';
 import Music from '@/page/music';
 import MusicDetail from '@/page/musicDetail';
 import Reading from '@/page/reading';
+import ReadingDetail from '@/page/readingDetail';
+import QuestionDetail from '@/page/questionDetail';
+import SerialDetail from '@/page/serialDetail';
 import Movie from '@/page/movie';
 import MovieDetail from '@/page/movieDetail';
 
@@ -33,6 +36,11 @@ export default new Router({
       component: Reading,
     },
     {
+      path: '/reading/:id',
+      name: 'ReadingDetail',
+      component: ReadingDetail,
+    },
+    {
       path: '/movie',
       name: 'Movie',
       component: Movie,
@@ -41,6 +49,16 @@ export default new Router({
       path: '/movie/:id',
       name: 'MovieDetail',
       component: MovieDetail,
+    },
+    {
+      path: '/question/:id',
+      name: 'QuestionDetail',
+      component: QuestionDetail,
+    },
+    {
+      path: '/serial/:id',
+      name: 'SerialDetail',
+      component: SerialDetail,
     },
   ],
 });

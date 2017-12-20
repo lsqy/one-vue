@@ -1,29 +1,26 @@
 <template>
-  <div class="reading-detail-page">
+  <div class="serial-detail-page">
     <div id="mescroll" class="mescroll">
         <div class="mescroll-bounce">
-            <div class="reading-detail-title">
-                <p>{{ readingDetail.hp_title }}</p>
+            <div class="serial-detail-title">
+                <p>{{ serialDetail.title }}</p>
             </div>
-            <div class="reading-detail-author">
-                <hr class="reading-detail-separate-line">
-                <p>文/{{ (readingDetail.author && readingDetail.author[0]) ? readingDetail.author[0].user_name : '' }}</p>
+            <div class="serial-detail-author">
+                <hr class="serial-detail-separate-line">
+                <p>文/{{ (serialDetail.author_list && serialDetail.author_list[0]) ? serialDetail.author_list[0].user_name : '' }}</p>
             </div>
-            <div class="reading-detail-img">
-                <img :src="readingDetail.img_url ? readingDetail.img_url : ''" alt="">
-            </div>  
-            <div class="reading-detail-content" v-html="readingDetail.hp_content ? readingDetail.hp_content : ''">
+            <div class="serial-detail-content" v-html="serialDetail.content ? serialDetail.content : ''">
             </div>
-            <div class="reading-detail-content-footer">
-                <p>{{ readingDetail.charge_edt }}</p>
-                <p>{{ readingDetail.copyright }}</p>
+            <div class="serial-detail-content-footer">
+                <p>{{ serialDetail.charge_edt }}</p>
+                <p>{{ serialDetail.copyright }}</p>
             </div>
-            <author-item :authorInfo="(readingDetail.author_list && readingDetail.author_list[0])  ? readingDetail.author_list[0] : {}" />
-            <div class="reading-detail-comment">
-                <p class="reading-detail-comment-title">评论内容</p>
-                <hr class="reading-detail-comment-separate-line"> 
+            <author-item :authorInfo="(serialDetail.author_list && serialDetail.author_list[0])  ? serialDetail.author_list[0] : {}" />
+            <div class="serial-detail-comment">
+                <p class="serial-detail-comment-title">评论内容</p>
+                <hr class="serial-detail-comment-separate-line"> 
             </div>
-            <div id="dataList"  class="data-list reading-detail-comment-list v-transition">
+            <div id="dataList"  class="data-list serial-detail-comment-list v-transition">
                 <comment-list-item v-for="commentListItem in commentList" :key="commentListItem.id" :info="commentListItem"/>
             </div>   
         </div>
@@ -40,8 +37,8 @@ export default {
   data() {
     return {
       mescroll: null,
-      readingDetail: {
-          author_list: {}
+      serialDetail: {
+          author_list: []
       },
       commentList: [],
     };
@@ -101,9 +98,9 @@ export default {
       const { commentList } = self;
 
       // 请求首页的时候不加id，以后分页请求加上最后一条的id
-      let url = `/api/v1/comment/essay/${id}/0`;
+      let url = `/api/v1/comment/serial/${id}/0`;
       if (commentList.length > 0) {
-        url = `/api/v1/comment/essay/${id}/${commentList[commentList.length - 1].id}`;
+        url = `/api/v1/comment/serial/${id}/${commentList[commentList.length - 1].id}`;
       }
       self.axios.get(url).then((res) => {
         if (res.data && res.data.data) {
@@ -121,11 +118,11 @@ export default {
       return false;
     },
     getDetail(id) {
-      const url = `/api/v1/reading/detail/${id}`;
+      const url = `/api/v1/serial/detail/${id}`;
       const self = this;
       self.axios.get(url).then((res) => {
         console.log('res', res);
-        self.readingDetail = res.data.data;
+        self.serialDetail = res.data.data;
       }, () => {
       });
     },
@@ -145,26 +142,26 @@ export default {
 </script>
 
 <style lang="scss">
-  .reading-detail-page {
+  .serial-detail-page {
     height: 100%;
     color: #323232;
     -webkit-overflow-scrolling: touch;
-    .reading-detail-title {
+    .serial-detail-title {
         margin: .8rem .533333rem 0 .533333rem;
         text-align: center;
         font-weight: bold;
         font-size: .746667rem;
     }
-    .reading-detail-separate-line {
+    .serial-detail-separate-line {
         border: .053333rem solid #000;
         margin: .386667rem 0;
         width: 1.866667rem;
     }
-    .reading-detail-author {
+    .serial-detail-author {
         font-size: .373333rem;
         margin: .8rem .533333rem;
     }
-    .reading-detail-img {
+    .serial-detail-img {
         margin: .533333rem;
         img {
             width: 100%;
@@ -172,7 +169,7 @@ export default {
             display: block;
         }
     }
-    .reading-detail-content {
+    .serial-detail-content {
         padding: 0 .533333rem;
         line-height: .693333rem;
         margin-top: .373333rem;
@@ -187,7 +184,7 @@ export default {
             color: #808080;
         }
     }
-    .reading-detail-content-footer {
+    .serial-detail-content-footer {
         color: #808080;
         font-style: oblique;
         font-size: .32rem;
@@ -196,16 +193,16 @@ export default {
             margin: .533333rem;
         }
     }
-    .reading-detail-comment-list {
+    .serial-detail-comment-list {
         margin: 0 .533333rem 0 .533333rem;
     }
-    .reading-detail-comment {
+    .serial-detail-comment {
         color: #323232;
         margin: 1.6rem .533333rem 0 .533333rem;
-        .reading-detail-comment-title {
+        .serial-detail-comment-title {
             font-size: .4rem;
         }
-        .reading-detail-comment-separate-line {
+        .serial-detail-comment-separate-line {
             border: .053333rem solid #000;
             margin: .186667rem 0;
             width: 1.866667rem;

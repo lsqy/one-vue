@@ -1,29 +1,27 @@
 <template>
-  <div class="reading-detail-page">
+  <div class="question-detail-page">
     <div id="mescroll" class="mescroll">
         <div class="mescroll-bounce">
-            <div class="reading-detail-title">
-                <p>{{ readingDetail.hp_title }}</p>
+            <div class="question-detail-title">
+                <p>{{ questionDetail.question_title }}</p>
             </div>
-            <div class="reading-detail-author">
-                <hr class="reading-detail-separate-line">
-                <p>文/{{ (readingDetail.author && readingDetail.author[0]) ? readingDetail.author[0].user_name : '' }}</p>
+            <div class="question-detail-asker">
+              <p class="question-detail-asker-name">{{ questionDetail.asker ? questionDetail.asker.user_name : '' }}问:</p>
+              <p>{{ questionDetail.question_content }}</p>
             </div>
-            <div class="reading-detail-img">
-                <img :src="readingDetail.img_url ? readingDetail.img_url : ''" alt="">
-            </div>  
-            <div class="reading-detail-content" v-html="readingDetail.hp_content ? readingDetail.hp_content : ''">
+            <p class="question-detail-answerer-name">{{ questionDetail.answerer ? questionDetail.answerer.user_name : '' }}答</p>
+            <div class="question-detail-content" v-html="questionDetail.answer_content">
             </div>
-            <div class="reading-detail-content-footer">
-                <p>{{ readingDetail.charge_edt }}</p>
-                <p>{{ readingDetail.copyright }}</p>
+            <div class="question-detail-content-footer">
+                <p>{{ questionDetail.charge_edt }}</p>
+                <p>{{ questionDetail.copyright }}</p>
             </div>
-            <author-item :authorInfo="(readingDetail.author_list && readingDetail.author_list[0])  ? readingDetail.author_list[0] : {}" />
-            <div class="reading-detail-comment">
-                <p class="reading-detail-comment-title">评论内容</p>
-                <hr class="reading-detail-comment-separate-line"> 
+            <author-item :authorInfo="(questionDetail.author_list && questionDetail.author_list[0])  ? questionDetail.author_list[0] : {}" />
+            <div class="question-detail-comment">
+                <p class="question-detail-comment-title">评论内容</p>
+                <hr class="question-detail-comment-separate-line"> 
             </div>
-            <div id="dataList"  class="data-list reading-detail-comment-list v-transition">
+            <div id="dataList"  class="data-list question-detail-comment-list v-transition">
                 <comment-list-item v-for="commentListItem in commentList" :key="commentListItem.id" :info="commentListItem"/>
             </div>   
         </div>
@@ -40,8 +38,8 @@ export default {
   data() {
     return {
       mescroll: null,
-      readingDetail: {
-          author_list: {}
+      questionDetail: {
+          author_list: []
       },
       commentList: [],
     };
@@ -101,9 +99,9 @@ export default {
       const { commentList } = self;
 
       // 请求首页的时候不加id，以后分页请求加上最后一条的id
-      let url = `/api/v1/comment/essay/${id}/0`;
+      let url = `/api/v1/comment/question/${id}/0`;
       if (commentList.length > 0) {
-        url = `/api/v1/comment/essay/${id}/${commentList[commentList.length - 1].id}`;
+        url = `/api/v1/comment/question/${id}/${commentList[commentList.length - 1].id}`;
       }
       self.axios.get(url).then((res) => {
         if (res.data && res.data.data) {
@@ -121,11 +119,11 @@ export default {
       return false;
     },
     getDetail(id) {
-      const url = `/api/v1/reading/detail/${id}`;
+      const url = `/api/v1/question/detail/${id}`;
       const self = this;
       self.axios.get(url).then((res) => {
         console.log('res', res);
-        self.readingDetail = res.data.data;
+        self.questionDetail = res.data.data;
       }, () => {
       });
     },
@@ -145,26 +143,44 @@ export default {
 </script>
 
 <style lang="scss">
-  .reading-detail-page {
+  .question-detail-page {
     height: 100%;
     color: #323232;
     -webkit-overflow-scrolling: touch;
-    .reading-detail-title {
+    .question-detail-title {
         margin: .8rem .533333rem 0 .533333rem;
         text-align: center;
         font-weight: bold;
         font-size: .746667rem;
     }
-    .reading-detail-separate-line {
+    .question-detail-asker {
+      margin: .533333rem .533333rem 0 .533333rem;
+      line-height: .693333rem;
+      margin-top: .373333rem;
+      font-size: .426667rem;
+      padding-bottom: .533333rem;
+      border-bottom: .026667rem solid #dedede;
+      .question-detail-asker-name {
+        font-size: .32rem;
+        color: #808080;
+        margin-bottom: .1rem;
+      }
+    }
+    .question-detail-answerer-name {
+        margin: .533333rem .533333rem 0 .533333rem;
+        font-size: .32rem;
+        color: #808080;
+      }
+    .question-detail-separate-line {
         border: .053333rem solid #000;
         margin: .386667rem 0;
         width: 1.866667rem;
     }
-    .reading-detail-author {
+    .question-detail-author {
         font-size: .373333rem;
         margin: .8rem .533333rem;
     }
-    .reading-detail-img {
+    .question-detail-img {
         margin: .533333rem;
         img {
             width: 100%;
@@ -172,7 +188,7 @@ export default {
             display: block;
         }
     }
-    .reading-detail-content {
+    .question-detail-content {
         padding: 0 .533333rem;
         line-height: .693333rem;
         margin-top: .373333rem;
@@ -187,7 +203,7 @@ export default {
             color: #808080;
         }
     }
-    .reading-detail-content-footer {
+    .question-detail-content-footer {
         color: #808080;
         font-style: oblique;
         font-size: .32rem;
@@ -196,16 +212,16 @@ export default {
             margin: .533333rem;
         }
     }
-    .reading-detail-comment-list {
+    .question-detail-comment-list {
         margin: 0 .533333rem 0 .533333rem;
     }
-    .reading-detail-comment {
+    .question-detail-comment {
         color: #323232;
         margin: 1.6rem .533333rem 0 .533333rem;
-        .reading-detail-comment-title {
+        .question-detail-comment-title {
             font-size: .4rem;
         }
-        .reading-detail-comment-separate-line {
+        .question-detail-comment-separate-line {
             border: .053333rem solid #000;
             margin: .186667rem 0;
             width: 1.866667rem;
