@@ -19,26 +19,6 @@
               <img :src="contentItem.img_url" alt="advertising" class="one-index-item-img__advertising">
             </a>
           </template>    
-          <!--文章-->
-          <template v-if="contentItem.category == '60'">
-            <p class="one-index-item-tag">— {{ contentItem.share_list.wx ? contentItem.share_list.wx.title.split(' ')[0] : 'ONE STORY' }} —</p>
-            <div class="one-index-item-title spec">
-              <p class="one-index-item-title-name">{{ contentItem.title }}</p>
-              <p class="one-index-item-title-author">{{ contentItem.share_list.wx ? contentItem.share_list.wx.desc.split(' ')[0] : '' }}</p>
-            </div> 
-            <div class="one-index-item-img spec">
-              <template v-if="contentItem.category == '4'">
-                <img :src="contentItem.img_url" alt="" class="one-index-item-music-img">
-                <img src="http://image.wufazhuce.com/music-detail-play.png" width="100%" class="play-btn">
-                <img src="http://image.wufazhuce.com/music_copyright_1.png" width="100%" class="platform-icon">
-              </template>
-              <template v-else>
-                <img :src="contentItem.img_url" alt="">
-              </template>
-            </div>
-            <p class="one-index-item-content spec">{{ contentItem.forward }}</p>
-            <p class="one-index-item-subtitle">{{ contentItem.subtitle ? '—' + contentItem.subtitle : '' }}</p>
-          </template>
      </div>
   </div>
 </template>
