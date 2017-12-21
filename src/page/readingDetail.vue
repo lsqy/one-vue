@@ -2,30 +2,33 @@
   <div class="reading-detail-page">
     <div id="mescroll" class="mescroll">
         <div class="mescroll-bounce">
-            <div class="reading-detail-title">
-                <p>{{ readingDetail.hp_title }}</p>
-            </div>
-            <div class="reading-detail-author">
-                <hr class="reading-detail-separate-line">
-                <p>文/{{ (readingDetail.author && readingDetail.author[0]) ? readingDetail.author[0].user_name : '' }}</p>
-            </div>
-            <div class="reading-detail-img">
-                <img :src="readingDetail.img_url ? readingDetail.img_url : ''" alt="">
-            </div>  
-            <div class="reading-detail-content" v-html="readingDetail.hp_content ? readingDetail.hp_content : ''">
-            </div>
-            <div class="reading-detail-content-footer">
-                <p>{{ readingDetail.charge_edt }}</p>
-                <p>{{ readingDetail.copyright }}</p>
-            </div>
-            <author-item :authorInfo="(readingDetail.author_list && readingDetail.author_list[0])  ? readingDetail.author_list[0] : {}" />
-            <div class="reading-detail-comment">
-                <p class="reading-detail-comment-title">评论内容</p>
-                <hr class="reading-detail-comment-separate-line"> 
-            </div>
-            <div id="dataList"  class="data-list reading-detail-comment-list v-transition">
-                <comment-list-item v-for="commentListItem in commentList" :key="commentListItem.id" :info="commentListItem"/>
-            </div>   
+            <spinner v-if="!readingDetail.hp_content"/>
+            <template v-if="readingDetail.hp_content">
+                <div class="reading-detail-title">
+                    <p>{{ readingDetail.hp_title }}</p>
+                </div>
+                <div class="reading-detail-author">
+                    <hr class="reading-detail-separate-line">
+                    <p>文/{{ (readingDetail.author && readingDetail.author[0]) ? readingDetail.author[0].user_name : '' }}</p>
+                </div>
+                <div class="reading-detail-img">
+                    <img :src="readingDetail.img_url ? readingDetail.img_url : ''" alt="">
+                </div>  
+                <div class="reading-detail-content" v-html="readingDetail.hp_content ? readingDetail.hp_content : ''">
+                </div>
+                <div class="reading-detail-content-footer">
+                    <p>{{ readingDetail.charge_edt }}</p>
+                    <p>{{ readingDetail.copyright }}</p>
+                </div>
+                <author-item :authorInfo="(readingDetail.author_list && readingDetail.author_list[0])  ? readingDetail.author_list[0] : {}" />
+                <div class="reading-detail-comment">
+                    <p class="reading-detail-comment-title">评论内容</p>
+                    <hr class="reading-detail-comment-separate-line"> 
+                </div>
+                <div id="dataList"  class="data-list reading-detail-comment-list v-transition">
+                    <comment-list-item v-for="commentListItem in commentList" :key="commentListItem.id" :info="commentListItem"/>
+                </div>   
+            </template>
         </div>
     </div>        
   </div>
@@ -34,6 +37,7 @@
 <script>
 import CommentListItem from '@/components/CommentListItem';
 import AuthorItem from '@/components/AuthorItem';
+import Spinner from '@/components/Spinner';
 
 export default {
   name: 'Music',
@@ -49,6 +53,7 @@ export default {
   components: {
     'comment-list-item': CommentListItem,
     'author-item': AuthorItem,
+    Spinner,
   },
   mounted() {
     const self = this;
@@ -213,3 +218,4 @@ export default {
     }
   }
 </style>
+

@@ -1,25 +1,26 @@
 <template>
   <div class="one-index-page">
-     <div class="one-index-item" v-for="contentItem in contentList" :key="contentItem.id" @click="goDetail(contentItem.category, contentItem.item_id)">
-          <!--摄影-->
-          <template v-if="contentItem.category == '0'">
-            <photo-item :contentItem="contentItem" />
-          </template>
-          <!--文章/ONE STORY 连载 影视 问答-->
-          <template v-if="contentItem.category == '1' || contentItem.category == '2' || contentItem.category == '3'  || contentItem.category == '5' ">
-            <index-item :contentItem="contentItem" />
-          </template>      
-          <!--音乐-->
-          <template v-if="contentItem.category == '4'">
-            <music-item :contentItem="contentItem" />
-          </template>       
-          <!--广告-->
-          <template v-if="contentItem.category == '6'">
-            <a :href="contentItem.ad_linkurl" target="_blank">
-              <img :src="contentItem.img_url" alt="advertising" class="one-index-item-img__advertising">
-            </a>
-          </template>    
-     </div>
+    <spinner v-if="contentList.length == 0"/>
+    <div class="one-index-item" v-for="contentItem in contentList" :key="contentItem.id" @click="goDetail(contentItem.category, contentItem.item_id)">
+      <!--摄影-->
+      <template v-if="contentItem.category == '0'">
+        <photo-item :contentItem="contentItem" />
+      </template>
+      <!--文章/ONE STORY 连载 影视 问答-->
+      <template v-if="contentItem.category == '1' || contentItem.category == '2' || contentItem.category == '3'  || contentItem.category == '5' ">
+        <index-item :contentItem="contentItem" />
+      </template>      
+      <!--音乐-->
+      <template v-if="contentItem.category == '4'">
+        <music-item :contentItem="contentItem" />
+      </template>       
+      <!--广告-->
+      <template v-if="contentItem.category == '6'">
+        <a :href="contentItem.ad_linkurl" target="_blank">
+          <img :src="contentItem.img_url" alt="advertising" class="one-index-item-img__advertising">
+        </a>
+      </template>    
+    </div>  
   </div>
 </template>
 
@@ -27,6 +28,7 @@
 import PhotoItem from '@/components/PhotoItem';
 import IndexItem from '@/components/IndexItem';
 import MusicItem from '@/components/MusicItem';
+import Spinner from '@/components/Spinner';
 
 export default {
   name: 'index',
@@ -39,6 +41,7 @@ export default {
     'photo-item': PhotoItem,
     'index-item': IndexItem,
     'music-item': MusicItem,
+    Spinner
   },
   mounted() {
     const self = this;
