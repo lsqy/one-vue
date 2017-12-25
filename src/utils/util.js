@@ -1,7 +1,10 @@
+// 获取作者姓名
 const getAuthor = desc => desc && desc.split(' ')[0];
 
+// 格式化日期
 const formatDate = date => date.split(' ')[0].split('-').join('/');
 
+// 获取dom
 const $ = (str) => {
   const char = str.charAt(0);
   if (char === '#') {

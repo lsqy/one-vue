@@ -29,13 +29,18 @@ import PhotoItem from '@/components/PhotoItem';
 import IndexItem from '@/components/IndexItem';
 import MusicItem from '@/components/MusicItem';
 import Spinner from '@/components/Spinner';
+import { mapGetters, mapState, } from 'vuex';
 
 export default {
   name: 'index',
   data() {
     return {
-      contentList: [],
     };
+  },
+  computed: {
+    ...mapState({
+      contentList: state => state.index.indexList,
+    }),
   },
   components: {
     'photo-item': PhotoItem,
@@ -45,13 +50,9 @@ export default {
   },
   mounted() {
     const self = this;
-    const listSingleUrl = `${this.$_config.apiBaseURL}/onelist`;
-    self.axios.get(listSingleUrl).then((res) => {
-      console.log('content_list', res.data.data.content_list);
-      self.contentList = res.data.data.content_list;
-    }, () => {
-
-    });
+    console.log('self', self);
+    console.log('route', self.$route);
+    self.$store.dispatch('getIndexList');
   },
   methods: {
     goDetail(category, itemId) {

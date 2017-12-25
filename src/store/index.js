@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import * as actions from './actions'
-import * as getters from './getters'
-import cart from './modules/cart'
+import * as actions from './actions';
+import * as getters from './getters';
+import index from './modules/index';
+import music from './modules/music';
 
 Vue.use(Vuex);
 
@@ -15,7 +16,8 @@ export default new Vuex.Store({
     actions,
     getters,
     modules: {
-      cart
+      index,
+      music,
     },
     strict: process.env.NODE_ENV !== 'production',
 });

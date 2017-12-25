@@ -27,7 +27,7 @@ export default {
   props: {
     contentItem: {
       type: Object,
-      default: function() {
+      default() {
         return {
             author: {},
             share_list: {

@@ -13,15 +13,24 @@
 <script>
 /* global MeScroll :true */
 import MusicItem from '@/components/MusicItem';
+import { mapGetters, mapState, } from 'vuex';
+import * as types from '../store/mutation-types';
+
 export default {
   name: 'Music',
   data() {
     return {
       mescroll: null,
-      musicList: [
-      ],
-      isRefresh: false, // 是否是下拉刷新
+      // musicList: [
+      // ],
+      // isRefresh: false, // 是否是下拉刷新
     };
+  },
+  computed: {
+    ...mapState({
+      isRefresh: state => state.music.isRefresh,
+      musicList: state => state.music.musicList,
+    }),
   },
   components: {
     'music-item': MusicItem,
@@ -84,23 +93,45 @@ export default {
       const { musicList, isRefresh } = this;
       const self = this;
       // 请求首页的时候不加id，以后分页请求加上最后一条的id
-      let url = '/api/v1/music/0';
+      // let url = '/api/v1/music/0';
       if (musicList.length > 0 && !isRefresh) {
-        url = `/api/v1/music/${musicList[musicList.length - 1].id}`;
-      }
-      this.axios.get(url).then((res) => {
-        if (res.data && res.data.data) {
+        self.$store.dispatch('getMusicList',{
+          id: musicList[musicList.length - 1].id,
+        }).then((res) => {
+          console.log('weew',res);
           if (successCallback) {
-            successCallback(res.data.data); // 成功回调
-            self.isRefresh = false;
+            if(res && res.length) {
+              successCallback(res); // 成功回调
+              self.$store.commit(types.GETMUSICLIST_SUCCESS, res);
+            }
           }
-        }
-      }, (err) => {
-        if (errorCallback) {
-          errorCallback(err); // 失败回调
-          self.isRefresh = false;
-        }
-      });
+        });
+        // url = `/api/v1/music/${musicList[musicList.length - 1].id}`;
+      } else {
+        self.$store.dispatch('getMusicList',{
+        }).then((res) => {
+          console.log('weew',res);
+          if (successCallback) {
+            if(res && res.length) {
+              successCallback(res); // 成功回调
+              self.$store.commit(types.GETMUSICLIST_SUCCESS, res);
+            }
+          }
+        });
+      }
+      // this.axios.get(url).then((res) => {
+      //   if (res.data && res.data.data) {
+      //     if (successCallback) {
+      //       successCallback(res.data.data); // 成功回调
+      //       self.isRefresh = false;
+      //     }
+      //   }
+      // }, (err) => {
+      //   if (errorCallback) {
+      //     errorCallback(err); // 失败回调
+      //     self.isRefresh = false;
+      //   }
+      // });
     },
     ondragstart() {
       return false;
