@@ -13,6 +13,7 @@
 <script>
 /* global MeScroll :true */
 import IndexItem from '@/components/IndexItem';
+
 export default {
   name: 'Music',
   data() {
@@ -49,7 +50,7 @@ export default {
           offset: 1000,
         },
         page: {
-						size: 10, //每页数据条数
+					size: 10, // 每页数据条数
 				},
         empty: {
           wrapId: 'dataList',
@@ -120,7 +121,7 @@ export default {
     const { $ } = this.$_utils;
     const $mescrollTotop = $('.mescroll-totop')[0];
     const $body = $('body')[0];
-    if($mescrollTotop) {
+    if ($mescrollTotop) {
       // 移除滑到顶部，否则切换到其他页面之后还存在
       $body.removeChild($mescrollTotop);
     }

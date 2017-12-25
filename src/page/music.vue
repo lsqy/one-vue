@@ -79,7 +79,8 @@ export default {
         // 如果是第一页需手动置空列表
         // if(page.num == 1) self.musicList = [];
         // 更新列表数据
-        self.musicList = self.musicList.concat(curPageData);
+        // self.musicList = self.musicList.concat(curPageData);
+        // self.$store.commit(types.GETMUSICLISTMORE_SUCCESS, curPageData);
         // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
         // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
         console.log(`page.num=${page.num}, page.size=${page.size}, curPageData.length=${curPageData.length}, self.musicList.length:${self.musicList.length}`);
@@ -94,6 +95,8 @@ export default {
       const self = this;
       // 请求首页的时候不加id，以后分页请求加上最后一条的id
       // let url = '/api/v1/music/0';
+      console.log('musicList', musicList);
+      console.log('isRefresh', isRefresh);
       if (musicList.length > 0 && !isRefresh) {
         self.$store.dispatch('getMusicList',{
           id: musicList[musicList.length - 1].id,
@@ -102,7 +105,7 @@ export default {
           if (successCallback) {
             if(res && res.length) {
               successCallback(res); // 成功回调
-              self.$store.commit(types.GETMUSICLIST_SUCCESS, res);
+              self.$store.commit(types.GETMUSICLISTMORE_SUCCESS, res);
             }
           }
         });
