@@ -38,10 +38,10 @@ const mutations = {
     state.isRefresh = false;
   },
   [types.GETMUSICLISTMORE_SUCCESS]( state, payload ) {
-    console.log('payload',payload);
-    console.log('begore',state.musicList);
     state.musicList = state.musicList.concat(payload);
-    console.log('after',state.musicList);
+  },
+  [types.REFRESHMUSICLIST]( state, payload ) {
+    state.isRefresh = true;
   }
 };
 

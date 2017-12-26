@@ -48,7 +48,8 @@ export default {
         },
         beforeLoading: () => {
           // 设置为下拉刷新状态
-          self.isRefresh = true;
+          // self.isRefresh = true;
+          self.$store.commit(types.REFRESHMUSICLIST);
         },
       },
       up: {    // 配置上拉加载
@@ -58,7 +59,7 @@ export default {
           offset: 1000,
         },
         page: {
-						size: 10, //每页数据条数
+					size: 10, //每页数据条数
 				},
         empty: {
           wrapId: 'dataList',
@@ -80,7 +81,6 @@ export default {
         // if(page.num == 1) self.musicList = [];
         // 更新列表数据
         // self.musicList = self.musicList.concat(curPageData);
-        // self.$store.commit(types.GETMUSICLISTMORE_SUCCESS, curPageData);
         // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
         // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
         console.log(`page.num=${page.num}, page.size=${page.size}, curPageData.length=${curPageData.length}, self.musicList.length:${self.musicList.length}`);
@@ -109,7 +109,6 @@ export default {
             }
           }
         });
-        // url = `/api/v1/music/${musicList[musicList.length - 1].id}`;
       } else {
         self.$store.dispatch('getMusicList',{
         }).then((res) => {
@@ -122,19 +121,6 @@ export default {
           }
         });
       }
-      // this.axios.get(url).then((res) => {
-      //   if (res.data && res.data.data) {
-      //     if (successCallback) {
-      //       successCallback(res.data.data); // 成功回调
-      //       self.isRefresh = false;
-      //     }
-      //   }
-      // }, (err) => {
-      //   if (errorCallback) {
-      //     errorCallback(err); // 失败回调
-      //     self.isRefresh = false;
-      //   }
-      // });
     },
     ondragstart() {
       return false;
