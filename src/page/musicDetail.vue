@@ -38,19 +38,25 @@
 </template>
 
 <script>
+/* global MeScroll:true */
 import CommentListItem from '@/components/CommentListItem';
+import { mapState } from 'vuex';
 import AuthorItem from '@/components/AuthorItem';
+import * as types from '../store/mutation-types';
 
+console.log('types', types);
 export default {
   name: 'Music',
   data() {
     return {
       mescroll: null,
-      musicDetail: {
-          author_list: []
-      },
       commentList: [],
     };
+  },
+  computed: {
+    ...mapState({
+      musicDetail: state => state.music.musicDetail,
+    }),
   },
   components: {
     'comment-list-item': CommentListItem,
@@ -61,25 +67,25 @@ export default {
     const { id } = self.$route.params;
     self.getDetail(id);
     self.mescroll = new MeScroll('mescroll', {
-        // 配置下拉刷新
-        down: {
-            use: false
+      // 配置下拉刷新
+      down: {
+        use: false,
+      },
+      up: {    // 配置上拉加载
+        callback: self.upCallback,
+        toTop: {
+          src: '/static/img/mescroll-totop.png',
+          offset: 1000,
         },
-        up: {    // 配置上拉加载
-            callback: self.upCallback,
-            toTop: {
-                src: '/static/img/mescroll-totop.png',
-                offset: 1000,
-            },
-            page: {
-                size: 10, //每页数据条数
-            },
-            empty: {
-                wrapId: 'dataList',
-                tip: '暂无评论',
-            },
-            clearEmptyId: 'dataList', // 相当于同时设置了clearId和empty.warpId; 简化写法;
+        page: {
+          size: 10, // 每页数据条数
         },
+        empty: {
+          wrapId: 'dataList',
+          tip: '暂无评论',
+        },
+        clearEmptyId: 'dataList', // 相当于同时设置了clearId和empty.warpId; 简化写法;
+      },
     });
     // 禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
     document.ondragstart = self.ondragstart;
@@ -94,7 +100,7 @@ export default {
         self.commentList = self.commentList.concat(curPageData);
         // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
         // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
-        console.log('curPageData.length',curPageData.length);
+        console.log('curPageData.length', curPageData.length);
         self.mescroll.endSuccess(curPageData.length);
       }, () => {
         // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
@@ -127,12 +133,8 @@ export default {
       return false;
     },
     getDetail(id) {
-      const url = `/api/v1/music/detail/${id}`;
-      const self = this;
-      self.axios.get(url).then((res) => {
-        console.log('res', res);
-        self.musicDetail = res.data.data;
-      }, () => {
+      this.$store.dispatch('getMusicDetail', {
+        id: id,
       });
     },
   },
@@ -142,11 +144,11 @@ export default {
     const { $ } = this.$_utils;
     const $mescrollTotop = $('.mescroll-totop')[0];
     const $body = $('body')[0];
-    if($mescrollTotop) {
-        // 移除滑到顶部，否则切换到其他页面之后还存在
-        $body.removeChild($mescrollTotop);
+    if ($mescrollTotop) {
+      // 移除滑到顶部，否则切换到其他页面之后还存在
+      $body.removeChild($mescrollTotop);
     }
-   },
+  },
 };
 </script>
 

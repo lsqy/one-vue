@@ -13,7 +13,7 @@
 <script>
 /* global MeScroll :true */
 import MusicItem from '@/components/MusicItem';
-import { mapGetters, mapState, } from 'vuex';
+import { mapState } from 'vuex';
 import * as types from '../store/mutation-types';
 
 export default {
@@ -41,7 +41,7 @@ export default {
       // 配置下拉刷新
       down: {
         callback: (mescroll) => {
-          if(self.isFromDetail) {
+          if (self.isFromDetail) {
             self.$store.commit(types.FROMMUSICDETAIL, {
               isFromDetail: false,
             });
@@ -64,8 +64,8 @@ export default {
         },
         page: {
           num: self.pageNo,
-					size: 10, //每页数据条数
-				},
+          size: 10, // 每页数据条数
+        },
         empty: {
           wrapId: 'dataList',
           tip: '暂无数据',
@@ -78,7 +78,6 @@ export default {
     const $mescroll = $('#mescroll');
     $mescroll.scrollTop = musicMescrollTop;
     sessionStorage.removeItem('musicMescrollTop');
-    
     // 禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
     document.ondragstart = self.ondragstart;
   },
@@ -86,7 +85,7 @@ export default {
     upCallback(page) {
       const self = this;
       // 如果是从列表返回的，则不发起首次请求
-      if(self.isFromDetail) {
+      if (self.isFromDetail) {
         self.$store.commit(types.FROMMUSICDETAIL, {
           isFromDetail: false,
         });
@@ -117,21 +116,23 @@ export default {
       const self = this;
       // 请求首页的时候不加id，以后分页请求加上最后一条的id
       if (musicList.length > 0 && !isRefresh) {
-        self.$store.dispatch('getMusicList',{
+        self.$store.dispatch('getMusicList', {
           id: musicList[musicList.length - 1].id,
-        }).then((res) => {
+        }).then((res, err) => {
           if (successCallback) {
-            if(res && res.length) {
+            if (res && res.length) {
               successCallback(res); // 成功回调
               self.$store.commit(types.GETMUSICLISTMORE_SUCCESS, res);
+            } else if (errorCallback) {
+              errorCallback(err);
             }
           }
         });
       } else {
-        self.$store.dispatch('getMusicList',{
+        self.$store.dispatch('getMusicList', {
         }).then((res) => {
           if (successCallback) {
-            if(res && res.length) {
+            if (res && res.length) {
               successCallback(res); // 成功回调
               self.$store.commit(types.GETMUSICLIST_SUCCESS, res);
             }
@@ -144,10 +145,9 @@ export default {
     },
     goDetail(itemId) {
       const { $ } = this.$_utils;
-      const $mescroll = $('#mescroll'),
-            mescrollTop = $mescroll.scrollTop || 0;
-
-      sessionStorage.setItem('musicMescrollTop', mescrollTop);  
+      const $mescroll = $('#mescroll');
+      const mescrollTop = $mescroll.scrollTop || 0;
+      sessionStorage.setItem('musicMescrollTop', mescrollTop);
 
       this.$router.push({
         name: 'MusicDetail',
@@ -166,7 +166,7 @@ export default {
     const { $ } = this.$_utils;
     const $mescrollTotop = $('.mescroll-totop')[0];
     const $body = $('body')[0];
-    if($mescrollTotop) {
+    if ($mescrollTotop) {
       // 移除滑到顶部，否则切换到其他页面之后还存在
       $body.removeChild($mescrollTotop);
     }

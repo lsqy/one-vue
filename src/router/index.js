@@ -61,13 +61,12 @@ export default new Router({
       component: SerialDetail,
     },
   ],
-  scrollBehavior (to, from, savedPosition) {
-    console.log(to, from);
-    console.log('savedPosition',savedPosition);
+  scrollBehavior(to, from, savedPosition) {
+    // console.log(to, from);
+    console.log('savedPosition', savedPosition);
     if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
+      return savedPosition;
     }
+    return { x: 0, y: 0 };
   },
 });

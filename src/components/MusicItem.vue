@@ -29,13 +29,13 @@ export default {
       type: Object,
       default() {
         return {
-            author: {},
-            share_list: {
-                wx: {
+          author: {},
+          share_list: {
+            wx: {
 
-                },
             },
-        }
+          },
+        };
       },
     },
   },

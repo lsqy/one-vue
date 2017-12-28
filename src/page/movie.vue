@@ -50,8 +50,8 @@ export default {
           offset: 1000,
         },
         page: {
-					size: 10, // 每页数据条数
-				},
+          size: 10, // 每页数据条数
+        },
         empty: {
           wrapId: 'dataList',
           tip: '暂无数据',

@@ -12,12 +12,12 @@ const state = {
 };
 
 export default new Vuex.Store({
-    state,
-    actions,
-    getters,
-    modules: {
-      index,
-      music,
-    },
-    strict: process.env.NODE_ENV !== 'production',
+  state,
+  actions,
+  getters,
+  modules: {
+    index,
+    music,
+  },
+  strict: process.env.NODE_ENV !== 'production',
 });

@@ -29,7 +29,7 @@ import PhotoItem from '@/components/PhotoItem';
 import IndexItem from '@/components/IndexItem';
 import MusicItem from '@/components/MusicItem';
 import Spinner from '@/components/Spinner';
-import { mapGetters, mapState, } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'index',
@@ -46,7 +46,7 @@ export default {
     'photo-item': PhotoItem,
     'index-item': IndexItem,
     'music-item': MusicItem,
-    Spinner
+    Spinner,
   },
   mounted() {
     const self = this;

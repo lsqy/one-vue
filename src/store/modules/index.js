@@ -1,25 +1,24 @@
 import {
-  getList
+  getList,
 } from '../../service/index';
-import * as types from '../mutation-types'
+import * as types from '../mutation-types';
 
-const state = {
+const IndexState = {
   indexList: [],
 };
 
 // getters
 const getters = {
-}
+};
 
 // actions
 const actions = {
-  //请求列表
+  // 请求列表
   async getIndexList({
     commit,
-    state,
   }) {
-    let res = await getList();
-    if(res && res.content_list) {
+    const res = await getList();
+    if (res && res.content_list) {
       commit(types.GETINDEXLIST_SUCCESS, res);
     }
   },
@@ -27,15 +26,16 @@ const actions = {
 
 // mutations
 const mutations = {
-  //请求列表成功
-  [types.GETINDEXLIST_SUCCESS]( state, payload ) {
-    state.indexList = payload.content_list;
+  // 请求列表成功
+  [types.GETINDEXLIST_SUCCESS](state, payload) {
+    const indexState = state;
+    indexState.indexList = payload.content_list;
   },
 };
 
 export default {
-  state,
+  state: IndexState,
   getters,
   actions,
   mutations,
-}
+};
