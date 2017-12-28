@@ -36,6 +36,7 @@ export default {
   },
   mounted() {
     const self = this;
+    const { $ } = self.$_utils;
     self.mescroll = new MeScroll('mescroll', {
       // 配置下拉刷新
       down: {
@@ -72,13 +73,19 @@ export default {
         clearEmptyId: 'dataList', // 相当于同时设置了clearId和empty.warpId; 简化写法;
       },
     });
+    // 列表返回还原滚动位置
+    const musicMescrollTop = sessionStorage.getItem('musicMescrollTop') || 0;
+    const $mescroll = $('#mescroll');
+    $mescroll.scrollTop = musicMescrollTop;
+    sessionStorage.removeItem('musicMescrollTop');
+    
     // 禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
-    // document.ondragstart = self.ondragstart;
+    document.ondragstart = self.ondragstart;
   },
   methods: {
     upCallback(page) {
       const self = this;
-      console.log('self.isFromDetail',self.isFromDetail);
+      // 如果是从列表返回的，则不发起首次请求
       if(self.isFromDetail) {
         self.$store.commit(types.FROMMUSICDETAIL, {
           isFromDetail: false,
@@ -136,6 +143,12 @@ export default {
       return false;
     },
     goDetail(itemId) {
+      const { $ } = this.$_utils;
+      const $mescroll = $('#mescroll'),
+            mescrollTop = $mescroll.scrollTop || 0;
+
+      sessionStorage.setItem('musicMescrollTop', mescrollTop);  
+
       this.$router.push({
         name: 'MusicDetail',
         params: {
@@ -143,7 +156,7 @@ export default {
         },
       });
       this.$store.commit(types.FROMMUSICDETAIL, {
-        isFromDetail: true
+        isFromDetail: true,
       });
     },
   },
