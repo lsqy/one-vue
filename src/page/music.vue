@@ -21,15 +21,14 @@ export default {
   data() {
     return {
       mescroll: null,
-      // musicList: [
-      // ],
-      // isRefresh: false, // 是否是下拉刷新
     };
   },
   computed: {
     ...mapState({
       isRefresh: state => state.music.isRefresh,
       musicList: state => state.music.musicList,
+      isFromDetail: state => state.music.isFromDetail,
+      pageNo: state => state.music.pageNo,
     }),
   },
   components: {
@@ -41,14 +40,18 @@ export default {
       // 配置下拉刷新
       down: {
         callback: (mescroll) => {
-          // 加载轮播数据
-          // loadSwiper();
+          if(self.isFromDetail) {
+            self.$store.commit(types.FROMMUSICDETAIL, {
+              isFromDetail: false,
+            });
+            return;
+          }
           // 下拉刷新的回调,默认重置上拉加载列表为第一页
           mescroll.resetUpScroll();
+          self.$store.commit(types.REFRESHMUSICLISTSUCCESS);
         },
         beforeLoading: () => {
           // 设置为下拉刷新状态
-          // self.isRefresh = true;
           self.$store.commit(types.REFRESHMUSICLIST);
         },
       },
@@ -59,6 +62,7 @@ export default {
           offset: 1000,
         },
         page: {
+          num: self.pageNo,
 					size: 10, //每页数据条数
 				},
         empty: {
@@ -74,6 +78,13 @@ export default {
   methods: {
     upCallback(page) {
       const self = this;
+      console.log('self.isFromDetail',self.isFromDetail);
+      if(self.isFromDetail) {
+        self.$store.commit(types.FROMMUSICDETAIL, {
+          isFromDetail: false,
+        });
+        return;
+      }
       self.getListDataFromNet(page.num, page.size, (curPageData) => {
         // curPageData=[]; //打开本行注释,可演示列表无任何数据empty的配置
         // console.log('curPageData', curPageData);
@@ -83,7 +94,11 @@ export default {
         // self.musicList = self.musicList.concat(curPageData);
         // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
         // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+        console.log('test');
         console.log(`page.num=${page.num}, page.size=${page.size}, curPageData.length=${curPageData.length}, self.musicList.length:${self.musicList.length}`);
+        self.$store.commit(types.ADDPAGENO, {
+          pageNo: page.num,
+        });
         self.mescroll.endSuccess(curPageData.length);
       }, () => {
         // 联网失败的回调,隐藏下拉刷新和上拉加载的状态;
@@ -94,14 +109,10 @@ export default {
       const { musicList, isRefresh } = this;
       const self = this;
       // 请求首页的时候不加id，以后分页请求加上最后一条的id
-      // let url = '/api/v1/music/0';
-      console.log('musicList', musicList);
-      console.log('isRefresh', isRefresh);
       if (musicList.length > 0 && !isRefresh) {
         self.$store.dispatch('getMusicList',{
           id: musicList[musicList.length - 1].id,
         }).then((res) => {
-          console.log('weew',res);
           if (successCallback) {
             if(res && res.length) {
               successCallback(res); // 成功回调
@@ -112,7 +123,6 @@ export default {
       } else {
         self.$store.dispatch('getMusicList',{
         }).then((res) => {
-          console.log('weew',res);
           if (successCallback) {
             if(res && res.length) {
               successCallback(res); // 成功回调
@@ -131,6 +141,9 @@ export default {
         params: {
           id: itemId,
         },
+      });
+      this.$store.commit(types.FROMMUSICDETAIL, {
+        isFromDetail: true
       });
     },
   },

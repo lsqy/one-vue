@@ -6,6 +6,8 @@ import * as types from '../mutation-types'
 const state = {
   musicList: [],
   isRefresh: false,
+  isFromDetail: false,
+  pageNo: 0,
 };
 
 // getters
@@ -33,7 +35,6 @@ const actions = {
 const mutations = {
   //请求列表成功
   [types.GETMUSICLIST_SUCCESS]( state, payload ) {
-    console.log('payload',payload);
     state.musicList = payload;
     state.isRefresh = false;
   },
@@ -42,7 +43,23 @@ const mutations = {
   },
   [types.REFRESHMUSICLIST]( state, payload ) {
     state.isRefresh = true;
-  }
+  },
+  [types.REFRESHMUSICLISTSUCCESS]( state, payload ) {
+    state.musicList = [];
+  },
+  [types.FROMMUSICDETAIL]( state, payload ) {
+    console.log('payload',payload);
+    if(payload) {
+      const { isFromDetail } = payload;
+      state.isFromDetail = isFromDetail;
+    }
+  },
+  [types.ADDPAGENO]( state, payload ) {
+    if(payload) {
+      const { pageNo } = payload;
+      state.pageNo = pageNo;
+    }
+  },
 };
 
 export default {
