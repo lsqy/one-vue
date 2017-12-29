@@ -44,7 +44,6 @@ import { mapState } from 'vuex';
 import AuthorItem from '@/components/AuthorItem';
 import * as types from '../store/mutation-types';
 
-console.log('types', types);
 export default {
   name: 'Music',
   data() {
@@ -95,10 +94,8 @@ export default {
       const self = this;
       self.getListDataFromNet(page.num, page.size, (curPageData) => {
         // curPageData=[]; //打开本行注释,可演示列表无任何数据empty的配置
-        console.log('curPageData', curPageData);
         // 更新列表数据
         self.commentList = self.commentList.concat(curPageData);
-        // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
         // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
         console.log('curPageData.length', curPageData.length);
         self.mescroll.endSuccess(curPageData.length);
@@ -134,7 +131,7 @@ export default {
     },
     getDetail(id) {
       this.$store.dispatch('getMusicDetail', {
-        id: id,
+        id,
       });
     },
   },
@@ -148,6 +145,7 @@ export default {
       // 移除滑到顶部，否则切换到其他页面之后还存在
       $body.removeChild($mescrollTotop);
     }
+    this.$store.commit(types.RESETTMUSICDETAIL);
   },
 };
 </script>

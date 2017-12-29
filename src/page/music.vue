@@ -47,8 +47,10 @@ export default {
             });
             return;
           }
+          // console.log('test');
           // 下拉刷新的回调,默认重置上拉加载列表为第一页
           mescroll.resetUpScroll();
+          // 将store中的musicList置空
           self.$store.commit(types.REFRESHMUSICLISTSUCCESS);
         },
         beforeLoading: () => {
@@ -93,14 +95,9 @@ export default {
       }
       self.getListDataFromNet(page.num, page.size, (curPageData) => {
         // curPageData=[]; //打开本行注释,可演示列表无任何数据empty的配置
-        // console.log('curPageData', curPageData);
         // 如果是第一页需手动置空列表
         // if(page.num == 1) self.musicList = [];
-        // 更新列表数据
-        // self.musicList = self.musicList.concat(curPageData);
-        // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
         // mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
-        console.log('test');
         console.log(`page.num=${page.num}, page.size=${page.size}, curPageData.length=${curPageData.length}, self.musicList.length:${self.musicList.length}`);
         self.$store.commit(types.ADDPAGENO, {
           pageNo: page.num,
@@ -114,7 +111,7 @@ export default {
     getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
       const { musicList, isRefresh } = this;
       const self = this;
-      // 请求首页的时候不加id，以后分页请求加上最后一条的id
+      // 请求首页的时候不加id，以后分页请求加上最后一条的id，如果是下拉刷新也不要带id请求
       if (musicList.length > 0 && !isRefresh) {
         self.$store.dispatch('getMusicList', {
           id: musicList[musicList.length - 1].id,

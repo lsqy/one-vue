@@ -41,9 +41,9 @@ const actions = {
     const result = await getDetail(id);
     console.log('result', result);
     if (result) {
-      $store.commit(types.GETMUSICDETAILSUCCESS,{
+      $store.commit(types.GETMUSICDETAILSUCCESS, {
         musicDetail: result,
-      })
+      });
       // return new Promise((resolve, reject) => {
       return new Promise((resolve) => {
         resolve(result);
@@ -71,6 +71,7 @@ const mutations = {
     const musicState = state;
     musicState.isRefresh = true;
   },
+  // 下拉刷新成功，先清空音乐列表
   [types.REFRESHMUSICLISTSUCCESS](state) {
     const musicState = state;
     musicState.musicList = [];
@@ -97,6 +98,13 @@ const mutations = {
       const { musicDetail } = payload;
       musicState.musicDetail = musicDetail;
     }
+  },
+  // 重置音乐详情
+  [types.RESETTMUSICDETAIL](state) {
+    const musicState = state;
+    musicState.musicDetail = {
+      author_list: [],
+    };
   },
 };
 

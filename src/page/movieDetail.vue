@@ -133,14 +133,13 @@ export default {
       return false;
     },
     getDetail(id) {
-      
-      // const url = `/api/v1/movie/detail/${id}`;
-      // const self = this;
-      // self.axios.get(url).then((res) => {
-      //   console.log('res', res);
-      //   self.movieDetail = res.data.data.data[0];
-      // }, () => {
-      // });
+      const url = `/api/v1/movie/detail/${id}`;
+      const self = this;
+      self.axios.get(url).then((res) => {
+        console.log('res', res);
+        self.movieDetail = res.data.data.data[0];
+      }, () => {
+      });
     },
   },
   destroyed() {
