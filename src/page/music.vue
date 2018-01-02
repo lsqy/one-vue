@@ -49,9 +49,11 @@ export default {
             return;
           }
           // 下拉刷新的回调,默认重置上拉加载列表为第一页
-          mescroll.resetUpScroll();
+          mescroll.resetUpScroll(true);
           // 将store中的musicList置空
-          self.$store.commit(types.REFRESHMUSICLISTSUCCESS);
+          setTimeout(() => {
+            self.$store.commit(types.REFRESHMUSICLISTSUCCESS);
+          }, 500); 
         },
         beforeLoading: () => {
           // 设置为下拉刷新状态
@@ -81,7 +83,7 @@ export default {
     $mescroll.scrollTop = musicMescrollTop;
     sessionStorage.removeItem('musicMescrollTop');
     // 禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
-    document.ondragstart = self.ondragstart;
+    // document.ondragstart = self.ondragstart;
   },
   methods: {
     upCallback(page) {
@@ -137,9 +139,9 @@ export default {
         });
       }
     },
-    ondragstart() {
-      return false;
-    },
+    // ondragstart() {
+    //   return false;
+    // },
     goDetail(itemId) {
       const { $ } = this.$_utils;
       const $mescroll = $('#mescroll');
