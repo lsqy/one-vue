@@ -41,13 +41,13 @@ export default {
       // 配置下拉刷新
       down: {
         callback: (mescroll) => {
+          // 如果是从详情跳转的，则首次返回
           if (self.isFromDetail) {
             self.$store.commit(types.FROMMUSICDETAIL, {
               isFromDetail: false,
             });
             return;
           }
-          // console.log('test');
           // 下拉刷新的回调,默认重置上拉加载列表为第一页
           mescroll.resetUpScroll();
           // 将store中的musicList置空
@@ -156,6 +156,13 @@ export default {
         isFromDetail: true,
       });
     },
+  },
+  beforeUpdate() {
+    console.log(23332);
+  },
+  updated() {
+    console.log(this.musicList);
+    // this.$set(this,'musicList',this.musicList);
   },
   destroyed() {
     // 这个操作至关重要，如果不清除mescroll实例，导致到下一个页面ios下无法滑动，因为是单页应用，如果不清除的话，会一直在内存中
