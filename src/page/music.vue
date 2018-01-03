@@ -37,51 +37,59 @@ export default {
   mounted() {
     const self = this;
     const { $ } = self.$_utils;
+
     self.mescroll = new MeScroll('mescroll', {
-      // 配置下拉刷新
-      down: {
-        callback: (mescroll) => {
-          // 如果是从详情跳转的，则首次返回
-          if (self.isFromDetail) {
-            self.$store.commit(types.FROMMUSICDETAIL, {
-              isFromDetail: false,
-            });
-            return;
-          }
-          // 下拉刷新的回调,默认重置上拉加载列表为第一页
-          mescroll.resetUpScroll(true);
-          // 将store中的musicList置空
-          setTimeout(() => {
+        // 配置下拉刷新
+        down: {
+          use: false,
+          callback: (mescroll) => {
+            // 如果是从详情跳转的，则首次返回
+            if (self.isFromDetail) {
+              self.$store.commit(types.FROMMUSICDETAIL, {
+                isFromDetail: false,
+              });
+              return;
+            }
+            // 下拉刷新的回调,默认重置上拉加载列表为第一页
+            mescroll.resetUpScroll();
+            // 将store中的musicList置空
             self.$store.commit(types.REFRESHMUSICLISTSUCCESS);
-          }, 500); 
+          },
+          beforeLoading: () => {
+            // 设置为下拉刷新状态
+            self.$store.commit(types.REFRESHMUSICLIST);
+          },
         },
-        beforeLoading: () => {
-          // 设置为下拉刷新状态
-          self.$store.commit(types.REFRESHMUSICLIST);
+        up: {    // 配置上拉加载
+          callback: self.upCallback,
+          auto: true,
+          toTop: {
+            src: '/static/img/mescroll-totop.png',
+            offset: 1000,
+          },
+          page: {
+            num: self.pageNo,
+            size: 10, // 每页数据条数
+          },
+          empty: {
+            wrapId: 'dataList',
+            tip: '暂无数据',
+          },
+          clearEmptyId: 'dataList', // 相当于同时设置了clearId和empty.warpId; 简化写法;
         },
-      },
-      up: {    // 配置上拉加载
-        callback: self.upCallback,
-        toTop: {
-          src: '/static/img/mescroll-totop.png',
-          offset: 1000,
+        inited: (mescroll, upwarp) => {
+          console.log(212112);
+          // 列表返回还原滚动位置
+          const musicMescrollTop = sessionStorage.getItem('musicMescrollTop') || 0;
+          const $mescroll = $('#mescroll');
+          $mescroll.scrollTop = musicMescrollTop;
+          sessionStorage.removeItem('musicMescrollTop');
         },
-        page: {
-          num: self.pageNo,
-          size: 10, // 每页数据条数
-        },
-        empty: {
-          wrapId: 'dataList',
-          tip: '暂无数据',
-        },
-        clearEmptyId: 'dataList', // 相当于同时设置了clearId和empty.warpId; 简化写法;
-      },
+        htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
     });
-    // 列表返回还原滚动位置
-    const musicMescrollTop = sessionStorage.getItem('musicMescrollTop') || 0;
-    const $mescroll = $('#mescroll');
-    $mescroll.scrollTop = musicMescrollTop;
-    sessionStorage.removeItem('musicMescrollTop');
+
+    console.log('self.pageNo',self.pageNo);
+
     // 禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
     // document.ondragstart = self.ondragstart;
   },

@@ -18,6 +18,13 @@ Vue.use(Vuex);
 
 Vue.config.productionTip = false;
 
+// const formatDate = date => date.split(' ')[0].split('-').join('/');
+
+Vue.filter('formatDate', function (value) {
+  if (!value) return ''
+  return value.split(' ')[0].split('-').join('/');
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

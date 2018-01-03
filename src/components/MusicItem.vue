@@ -16,7 +16,8 @@
       <div class="c-music-item-content">
           <p class="c-music-item-music__desc">{{ contentItem.author.user_name }} | {{ contentItem.subtitle }}</p>
           <p class="c-music-item-content-title">{{ contentItem.forward }}</p>
-          <p class="c-music-item-content-date">{{ contentItem.post_date ? $_utils.formatDate(contentItem.post_date) : '' }}</p>
+          <!--<p class="c-music-item-content-date">{{ contentItem.post_date ? $_utils.formatDate(contentItem.post_date) : '' }}</p>-->
+          <p class="c-music-item-content-date">{{ contentItem.post_date | formatDate }}</p>
       </div>
   </div>
 </template>

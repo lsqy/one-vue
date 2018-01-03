@@ -62,7 +62,7 @@ const mutations = {
     const musicState = state;
     musicState.musicList = payload;
     musicState.isRefresh = false;
-    // musicState.pageNo = 0;
+    // musicState.pageNo = 1;
   },
   [types.GETMUSICLISTMORE_SUCCESS](state, payload) {
     const musicState = state;
